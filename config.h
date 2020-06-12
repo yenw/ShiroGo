@@ -23,6 +23,6 @@ const bool USE_SWAP_ACTION = true;// PP: false
 const float ITER_RATE = 0.25 * pow(1.2f, ACTION_PLANES * 0.5 + USE_RD + USE_SWAP_ACTION);
 const int SP_THREADS = 4;// 模拟n线程各对弈1局, 实际上是单线程.
 #define MXNET_VERSION 10600
-#define MXNET_PR
+//#define MXNET_PR
 
 #endif //SHIRO_CONFIG_H
