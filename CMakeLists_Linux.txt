@@ -1,0 +1,75 @@
+cmake_minimum_required(VERSION 3.5.1)
+project(Shiro)
+
+set(CMAKE_CXX_STANDARD 11)
+IF(NOT CMAKE_BUILD_TYPE)
+    SET(CMAKE_BUILD_TYPE Release)
+ENDIF()
+
+IF (CMAKE_BUILD_TYPE STREQUAL Debug)
+    MESSAGE(STATUS "Debug")
+ELSE()
+    MESSAGE(STATUS "Release")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O3")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3")
+ENDIF()
+
+#unix/osx
+IF (CMAKE_SYSTEM_NAME MATCHES "Linux")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -s")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -s")
+    add_definitions(-D LINUX_USE_CUDA)
+    MESSAGE(STATUS "use_cuda")
+ELSEIF (CMAKE_SYSTEM_NAME MATCHES "Windows")
+    MESSAGE(STATUS "current platform: Windows")
+ELSEIF (CMAKE_SYSTEM_NAME MATCHES "FreeBSD")
+    MESSAGE(STATUS "current platform: FreeBSD")
+ELSE ()
+    MESSAGE(STATUS "other platform: ${CMAKE_SYSTEM_NAME}")
+ENDIF (CMAKE_SYSTEM_NAME MATCHES "Linux")
+
+#mxnet
+set(MXNET_HOME $ENV{HOME}/build/lib/mxnet)
+set(MXNET_INCLUDE_DIR
+    ${MXNET_HOME}/3rdparty/dmlc-core/include
+    ${MXNET_HOME}/3rdparty/tvm/nnvm/include
+    ${MXNET_HOME}/include
+    ${MXNET_HOME}/cpp-package/include
+)
+
+set(MXNET_LIBRARIES
+    #${MXNET_HOME}/dmlc-core/libdmlc.a
+    #${MXNET_HOME}/nnvm/lib/libnnvm.a
+    #${MXNET_HOME}/lib/libmxnet.so
+    )
+
+include_directories(
+    ${MXNET_INCLUDE_DIR}
+)
+
+link_directories(${MXNET_HOME}/lib)
+link_libraries(
+    #libmxnet.dylib
+    libmxnet.so
+)
+
+add_executable(
+    Shiro
+    main.cpp
+    GoBoard.cpp
+    Random.cpp
+    Zobrist.cpp
+    UCTNode.cpp
+    MCTS.cpp
+    Network.cpp
+    ReplayPool.cpp
+    Utils.cpp
+    Transform.cpp
+    SelfPlay.cpp
+    Symbol.cpp
+    NNMetric.cpp)
+
+target_link_libraries(
+    Shiro
+    #${MXNET_LIBRARIES}
+)

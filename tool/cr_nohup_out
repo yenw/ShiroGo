@@ -1,0 +1,2 @@
+#!/bin/bash
+nohup ./cr_auto 2>&1 &

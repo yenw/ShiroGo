@@ -1,0 +1,6 @@
+#!/bin/bash
+if [ $# == 1 ] ;then
+    watch --color -n 0.1 "tail -$1 nohup.out"
+else
+    watch --color -n 0.1 "tail -52 nohup.out"
+fi

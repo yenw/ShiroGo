@@ -1,0 +1,2 @@
+#!/bin/bash
+ps -ef | grep --color=auto -E "cr_auto|Shiro"

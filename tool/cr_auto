@@ -1,0 +1,81 @@
+#!/bin/bash
+get_weight_name()
+{
+    id=`cat ./model/config.txt`
+    id=$[$id % 10]
+
+    return $id
+}
+
+backup_weight()
+{
+    folder=$1
+    get_weight_name
+    weight="./model/weight_$?.param"
+    # model
+    mkdir -p $folder
+    cp "./model/config.txt" $folder
+    cp $weight $folder
+    # xz
+    tar -cJf "${folder}.tar.xz" ${folder}
+    rm -rf $folder
+    mkdir -p xz_file
+    mv "${folder}.tar.xz" ./xz_file
+}
+
+get_selfplay_id()
+{
+    width=$1
+    height=$2
+    fn="./data/${height}x${width}/id.txt"
+    id="0"
+    if [ -f "${fn}" ]; then
+        id=`cat ${fn}`
+    fi
+    return ${id}
+}
+
+archive_nohup()
+{
+    fn=$1
+    cp nohup.out ${fn}
+    tar -cJf "${fn}.xz" ${fn}
+    rm ${fn}
+    mkdir -p xz_file
+    mv "${fn}.xz" ./xz_file
+    echo "" > nohup.out
+}
+
+do_selfplay()
+{
+    width=$1
+    height=$2
+    save_num=$3
+    fn="./data/${height}x${width}/id.txt"
+    id="0"
+    if [ -f "${fn}" ]; then
+        id=`cat ${fn}`
+    fi
+    num=$[${save_num} - (${id} % ${save_num})]
+    backup_num=$[${id} + ${num}]
+    ./Shiro 2 ${width} ${height} ${num}
+    backup_weight "model_${width}x${height}_${backup_num}"
+    archive_nohup "${width}x${height}_${backup_num}.out"
+}
+
+selfplay()
+{
+    for ((i=0;i<$4;i++))
+    do
+        do_selfplay $1 $2 $3
+    done
+}
+
+selfplay 3 3 100 1
+selfplay 4 4 100 4
+#selfplay 6 6 500 2
+#selfplay 9 9 1000 10
+
+#selfplay 6 6 1000 24
+#selfplay 7 7 1000 64
+

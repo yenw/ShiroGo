@@ -1,0 +1,5 @@
+#!/bin/bash
+rm -rf nohup.out
+rm -rf data sgf rd
+rm -rf model*
+#make
