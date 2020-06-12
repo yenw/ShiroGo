@@ -122,5 +122,5 @@ cd build
 ```
 
 ### NN Example
-![](NN Example block=2, filter=64.pdf)
+* [NN Example block=2, filter=64.pdf](https://github.com/yenw/ShiroGo/blob/master/NN%20Example%20block%3D2%2C%20filter%3D64.pdf)
 
