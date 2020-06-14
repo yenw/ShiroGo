@@ -121,6 +121,69 @@ cd build
 ./cr_watch
 ```
 
-### NN Example
+### NN 
+
+#### Example
 * [NN Example block=2, filter=64.pdf](https://github.com/yenw/ShiroGo/blob/master/NN%20Example%20block%3D2%2C%20filter%3D64.pdf)
 
+#### Supported Architecture
+* Input
+  * 16 channel: history planes
+    * 8 step x 2 color
+  * 2 channel: color planes
+    * black
+    * white
+  * 2 channel: action planes
+    * first: for normal move
+    * second: for pass move
+* Shared Body
+  * Block
+    * ResNet V1
+    * ResNet V2
+    * ResNext
+    * ResNet used by CrazyZero
+    * DPN: Dual Path Networks
+    * MixNet
+  * SE_Block
+    * SE: squeeze & excitation
+    * SNSE: SparseNet: squeeze & excitation
+    * SA: Spatial Attention
+    * CBAM: Channel attention & Spatial Attention
+    * SAA: Spatial Attention & Add
+    * KT
+  * SE_Type:
+    * Type A: 
+      * input2 = Conv3x3(input)
+      * input3 = Conv3x3(input2)
+      * input3 = SE(input3)
+      * output = input3 + input
+    * Type B: 
+      * input2 = Conv3x3(input)
+      * input3 = Conv3x3(input2)
+      * input3 = input3 + input
+      * input4 = SE(input3)
+      * output = input4 + input3
+  * Activation
+    * relu
+    * elu
+    * gelu
+    * mish
+    * swish1
+    * leaky relu
+    * prelu
+    * rrelu
+    * selu
+* Output
+  * Policy Head
+    * Normal Move Head
+    * Pass Head
+  * Board Value Head
+  * State Head
+    * action = none, $state = s_t$
+    * action = a, $state = s_{t+1} = P(s_t, a)$
+
+#### N2N
+* Support: 
+  * Shared Body Block: ResNetV2
+  * Shared Body SE: none, KT-Type A, KT-Type B
+  * Output: Policy, Board Value Head, State Head
