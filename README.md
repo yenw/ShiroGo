@@ -155,14 +155,12 @@ cd build
     * Type A: 
       * input2 = Conv3x3(input)
       * input3 = Conv3x3(input2)
-      * input3 = SE(input3)
-      * output = input3 + input
+      * output = SE(input3) + input
     * Type B: 
       * input2 = Conv3x3(input)
       * input3 = Conv3x3(input2)
-      * input3 = input3 + input
-      * input4 = SE(input3)
-      * output = input4 + input3
+      * input4 = input3 + input
+      * output = SE(input4) + input4
   * Activation
     * relu
     * elu
